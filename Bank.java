@@ -45,10 +45,14 @@ public class Bank {
         //
         // ห้ามแก้ด้วยการเอาล็อกใบใดใบหนึ่งออก — ยอดรวมจะเพี้ยน
         // ---------------------------------------------------------------
-        synchronized (from) {
-            synchronized (to) {
+        boolean fwd = from.id() < to.id();
+        Account first = fwd ? from : to ;  // if fwd true first = *from* else secound = *to*
+        Account secound = fwd ? to : from ; // if 
+
+        synchronized (first) {
+            synchronized (secound) {
                 if (!from.withdraw(amount)) {
-                    return false;
+                    return false; 
                 }
                 to.deposit(amount);
                 return true;
